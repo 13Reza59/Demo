@@ -15,6 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -37,6 +39,45 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>maven</id>
+			<name>maven.apache Repository</name>
+			<url>https://repo.maven.apache.org/maven2</url>
+		</repository>
+		<repository>
+			<id>maven1</id>
+			<name>maven Repository</name>
+			<url>https://repo1.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>JCenter</id>
+			<name>JCenter Repository</name>
+			<url>https://jcenter.bintray.com/</url>
+		</repository>
+		<repository>
+			<id>atlassian</id>
+			<name>maven atlassian Repository</name>
+			<url>https://packages.atlassian.com/mvn/maven-atlassian-external/</url>
+		</repository>
+		<repository>
+			<id>ossrh</id>
+			<name>Sonatype Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<!--        <repository>-->
+		<!--            <id>local-repo-co</id>-->
+		<!--            <name>local Repository</name>-->
+		<!--            <url>file://D:/MyRepository</url>-->
+		<!--        </repository>-->
+		<!--        <repository>-->
+		<!--            <id>local-repo-home</id>-->
+		<!--            <name>local Repository</name>-->
+		<!--            <url>file://D:/Develope/MyRepository</url>-->
+		<!--        </repository>-->
+	</repositories>
+
 
 	<build>
 		<plugins>
