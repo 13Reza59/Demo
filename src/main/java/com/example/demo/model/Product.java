@@ -1,16 +1,19 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 
 @Entity
+@Table(name = "products")
 public class Product {
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "price")
     private double price;
 
     public Product(Long id, String name, double price) {
@@ -18,6 +21,8 @@ public class Product {
         this.name = name;
         this.price = price;
     }
+
+    public Product() {}
 
     public Long getId() {
         return id;

@@ -1,7 +1,7 @@
 package com.example.demo.unitTests;
 
 import com.example.demo.model.Product;
-import com.example.demo.repo.ProductRepository;
+import com.example.demo.repository.ProductRepository;
 import com.example.demo.serivce.ProductService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
