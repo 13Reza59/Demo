@@ -43,18 +43,20 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean updateProduct(Product product) {
+        if( !productRepository.existsById( product.getId()))
+            return false;
+
         Optional<Product> productDb = productRepository.findById( product.getId());
 
         if( productDb.isPresent()) {
             Product productUpdate = productDb.get();
-            productUpdate.setId( product.getId());
             productUpdate.setName( product.getName());
             productUpdate.setPrice( product.getPrice());
             productRepository.save( productUpdate);
             return true;
-        } else {
+
+        } else
             return false;
-        }
     }
 
     @Override
@@ -66,19 +68,20 @@ public class ProductServiceImpl implements ProductService{
         } else {
             return null;
         }
-//        return productDb.get();
     }
+
+//    @Override
+//    public boolean deleteProduct(long id) {
+//        if( productRepository.existsById( id)) {
+//            productRepository.deleteById( id);
+//            return !productRepository.existsById( id);
+//        } else
+//            return false;
+//    }
 
     @Override
     public boolean deleteProduct(long id) {
-        Optional<Product> productDb = productRepository.findById(id);
-
-        if (productDb.isPresent()) {
-            productRepository.delete( productDb.get());
-            return true;
-        } else {
-            return false;
-        }
+        productRepository.deleteById( id);
+        return !productRepository.existsById( id);
     }
-
 }

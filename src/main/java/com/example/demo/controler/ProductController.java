@@ -1,52 +1,54 @@
 package com.example.demo.controler;
 
 import com.example.demo.model.Product;
-import com.example.demo.serivce.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import com.example.demo.serivce.ProductServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/products")
 public class ProductController {
-    @Autowired
-    private ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
 
-//    @GetMapping
-//    public long getAllProductsCount() {
-//        return productService.getAllProductsCount();
+    public ProductController(ProductServiceImpl productService) {
+        this.productServiceImpl = productService;
+    }
+
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productServiceImpl.getAllProducts();
+    }
+
+    @GetMapping("/{id}")
+    public Product getAllProductById( @PathVariable int id) {
+        return productServiceImpl.getProductById( id);
+    }
+
+    @PostMapping
+    public Product createProduct( @RequestBody Product product) {
+        return productServiceImpl.createProduct( product);
+    }
+
+    @PutMapping
+    public String updateProduct( @RequestBody Product product) {
+        if( productServiceImpl.updateProduct( product))
+            return "{ \"result\": \"OK\" }";
+        else
+            return "{ \"result\": \"Not Found\" }";
+    }
+
+
+//    @DeleteMapping("/{id}")
+//    public void deleteProduct( @PathVariable long id) {
+//        productService.deleteProduct( id);
 //    }
 
-    @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
-
-    @GetMapping("/products/{id}")
-    public Product getAllProductById(@PathVariable int id) {
-        return productService.getProductById( id);
-    }
-
-    @PostMapping("/products")
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct( product);
-    }
-
-    @PutMapping("/products")
-    public HttpStatus updateProduct(@RequestBody Product product) {
-        if(  productService.updateProduct( product))
-            return HttpStatus.OK;
+    @DeleteMapping("/{id}")
+    public String deleteProduct( @PathVariable long id) {
+        if( productServiceImpl.deleteProduct( id))
+            return "{ \"result\": \"OK\" }";
         else
-            return HttpStatus.NOT_FOUND;
-    }
-
-
-    @DeleteMapping("/products/{id}")
-    public HttpStatus deleteProduct(@PathVariable long id) {
-        if( productService.deleteProduct( id))
-            return HttpStatus.OK;
-        else
-            return HttpStatus.NOT_FOUND;
+            return "{ \"result\": \"Not Found\" }";
     }
 }
