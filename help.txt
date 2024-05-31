@@ -1,0 +1,12 @@
+get:
+http://localhost:8080/products
+
+
+put:
+http://localhost:8080/products
+
+body:
+{
+    "name": "reza",
+    "price": 3.16
+}
