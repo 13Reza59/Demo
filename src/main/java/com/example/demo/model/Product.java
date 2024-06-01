@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "products")
@@ -16,13 +18,17 @@ public class Product {
     @Column(name = "price")
     private double price;
 
-    public Product(Long id, String name, double price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-    }
+    @ManyToOne
+    @JoinColumn( name="order_id", nullable=false)
+    private Order order;
 
-    public Product() {}
+//    public Product( Long id, String name, double price) {
+//        this.id = id;
+//        this.name = name;
+//        this.price = price;
+//    }
+//
+//    public Product() {}
 
     public Long getId() {
         return id;

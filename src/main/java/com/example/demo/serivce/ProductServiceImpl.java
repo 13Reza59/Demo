@@ -1,7 +1,7 @@
 package com.example.demo.serivce;
 
 import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService{
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepo productRepo;
 
     @Override
     public List<Product> getAllProducts() {
@@ -27,32 +27,32 @@ public class ProductServiceImpl implements ProductService{
 //        return data;
 
         List<Product> products = new ArrayList<>();
-        productRepository.findAll().forEach( products::add);
+        productRepo.findAll().forEach( products::add);
         return products;
     }
 
     @Override
     public long getAllProductsCount() {
-        return productRepository.count();
+        return productRepo.count();
     }
 
     @Override
     public Product createProduct(Product product) {
-        return productRepository.save(product);
+        return productRepo.save(product);
     }
 
     @Override
     public boolean updateProduct(Product product) {
-        if( !productRepository.existsById( product.getId()))
+        if( !productRepo.existsById( product.getId()))
             return false;
 
-        Optional<Product> productDb = productRepository.findById( product.getId());
+        Optional<Product> productDb = productRepo.findById( product.getId());
 
         if( productDb.isPresent()) {
             Product productUpdate = productDb.get();
             productUpdate.setName( product.getName());
             productUpdate.setPrice( product.getPrice());
-            productRepository.save( productUpdate);
+            productRepo.save( productUpdate);
             return true;
 
         } else
@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product getProductById(long productId) {
-        Optional<Product> productDb = productRepository.findById( productId);
+        Optional<Product> productDb = productRepo.findById( productId);
 
         if (productDb.isPresent()) {
             return productDb.get();
@@ -81,7 +81,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean deleteProduct(long id) {
-        productRepository.deleteById( id);
-        return !productRepository.existsById( id);
+        productRepo.deleteById( id);
+        return !productRepo.existsById( id);
     }
 }

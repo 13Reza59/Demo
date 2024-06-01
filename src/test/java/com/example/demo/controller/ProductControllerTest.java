@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.ProductRepo;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
@@ -27,17 +27,17 @@ public class ProductControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepo productRepo;
 
     private Product product;
 
     @BeforeEach
     public void setUp() {
-        productRepository.deleteAll();
+        productRepo.deleteAll();
         product = new Product();
         product.setName( "pencil");
         product.setPrice( 3.45);
-        productRepository.save( product);
+        productRepo.save( product);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ProductControllerTest {
     @Test
     @Order(4)
     public void testUpdateProduct() throws Exception {
-        Product product1 = productRepository.findByName( "pencil");
+        Product product1 = productRepo.findByName( "pencil");
 
         JSONObject object = new JSONObject();
         object.put( "id", product1.getId());
@@ -99,7 +99,7 @@ public class ProductControllerTest {
     @Test
     @Order(5)
     public void testDeleteProduct() throws Exception {
-        Product product1 = productRepository.findByName( "pencil");
+        Product product1 = productRepo.findByName( "pencil");
 
         JSONObject object = new JSONObject();
         object.put( "id", product1.getId());
@@ -110,7 +110,7 @@ public class ProductControllerTest {
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
 
-        Optional<Product> deletedProduct = productRepository.findById( product.getId());
+        Optional<Product> deletedProduct = productRepo.findById( product.getId());
         assertEquals(Optional.empty(), deletedProduct);
     }
 }

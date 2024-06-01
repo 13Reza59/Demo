@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 
 import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.ProductRepo;
 import com.example.demo.serivce.ProductServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProductServiceTest {
 
     @Mock
-    private ProductRepository productRepository;
+    private ProductRepo productRepo;
 
     @InjectMocks
     private ProductServiceImpl productServiceImpl;
@@ -41,12 +41,12 @@ public class ProductServiceTest {
 
         List<Product> products = Arrays.asList( product1, product2);
 
-        when( productRepository.findAll()).thenReturn( products);
+        when( productRepo.findAll()).thenReturn( products);
 
         List<Product> result = productServiceImpl.getAllProducts();
 
         assertEquals(2, result.size());
-        verify( productRepository, times(1)).findAll();
+        verify(productRepo, times(1)).findAll();
     }
 
     @Test
@@ -56,12 +56,12 @@ public class ProductServiceTest {
         product.setName( "pencil");
         product.setPrice( 3.45);
 
-        when( productRepository.findById( 1L)).thenReturn( Optional.of( product));
+        when( productRepo.findById( 1L)).thenReturn( Optional.of( product));
 
         Product result = productServiceImpl.getProductById(1L);
 
         assertEquals("pencil", result.getName());
-        verify( productRepository, times(1)).findById( 1L);
+        verify(productRepo, times(1)).findById( 1L);
     }
 
     @Test
@@ -70,12 +70,12 @@ public class ProductServiceTest {
         product.setName( "pencil");
         product.setPrice( 3.45);
 
-        when( productRepository.save( product)).thenReturn( product);
+        when( productRepo.save( product)).thenReturn( product);
 
         Product result = productServiceImpl.createProduct( product);
 
         assertEquals("pencil", result.getName());
-        verify( productRepository, times(1)).save( product);
+        verify(productRepo, times(1)).save( product);
     }
 
     @Test
@@ -84,11 +84,11 @@ public class ProductServiceTest {
         product.setName( "pencil");
         product.setPrice( 3.45);
 
-        when( productRepository.save( product)).thenReturn( product);
+        when( productRepo.save( product)).thenReturn( product);
 
         product.setPrice( 4.56);
 
-        Product product1 = productRepository.save( product);
+        Product product1 = productRepo.save( product);
 
         Assertions.assertThat( product1.getPrice()).isEqualTo(4.56);
     }
@@ -97,11 +97,11 @@ public class ProductServiceTest {
     void testDeleteProduct() {
         Long productId = 1L;
 
-        doNothing().when( productRepository).deleteById( productId);
+        doNothing().when(productRepo).deleteById( productId);
 //        when( productRepository.deleteById( productId)).then( "{ result: \"OK\" }")));
 
         productServiceImpl.deleteProduct( productId);
 
-        verify( productRepository).deleteById( productId);
+        verify(productRepo).deleteById( productId);
     }
 }
