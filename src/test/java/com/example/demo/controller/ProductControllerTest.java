@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -39,6 +40,7 @@ public class ProductControllerTest {
     }
 
     @Test
+    @Order(1)
     public void testGetAllProducts() throws Exception {
         mockMvc.perform( get("/products")
                         .contentType( MediaType.APPLICATION_JSON))
@@ -48,6 +50,7 @@ public class ProductControllerTest {
     }
 
     @Test
+    @Order(2)
     public void testGetProductById() throws Exception {
         mockMvc.perform( get("/products/{id}", product.getId())
                         .contentType( MediaType.APPLICATION_JSON))
@@ -57,6 +60,7 @@ public class ProductControllerTest {
     }
 
     @Test
+    @Order(3)
     public void testCreateProduct() throws Exception {
         mockMvc.perform( post("/products")
                         .contentType( MediaType.APPLICATION_JSON)
@@ -67,17 +71,23 @@ public class ProductControllerTest {
     }
 
     @Test
+    @Order(4)
     public void testUpdateProduct() throws Exception {
+        Product product1 = productRepository.findByName( "pencil");
+
         mockMvc.perform( put("/products")
                         .contentType( MediaType.APPLICATION_JSON)
-                        .content( "{\"id\": 1, \"name\": \"marker\", \"price\": 5.67}"))
+                        .content( "{\"id\": " + product1.getId() + ", \"name\": \"marker\", \"price\": 5.67}"))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
     }
 
     @Test
+    @Order(5)
     public void testDeleteProduct() throws Exception {
-        mockMvc.perform( delete("/products/{id}", product.getId())
+        Product product1 = productRepository.findByName( "pencil");
+
+        mockMvc.perform( delete("/products/{id}", product1.getId())
                         .contentType( MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
