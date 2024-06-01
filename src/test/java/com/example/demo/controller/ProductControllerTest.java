@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -52,8 +53,12 @@ public class ProductControllerTest {
     @Test
     @Order(2)
     public void testGetProductById() throws Exception {
-        mockMvc.perform( get("/products/{id}", product.getId())
-                        .contentType( MediaType.APPLICATION_JSON))
+        JSONObject object = new JSONObject();
+        object.put( "id", product.getId());
+
+        mockMvc.perform( get("/product")
+                        .contentType( MediaType.APPLICATION_JSON)
+                        .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.name", is( product.getName())))
                 .andExpect( jsonPath("$.price", is( product.getPrice())));
@@ -62,12 +67,16 @@ public class ProductControllerTest {
     @Test
     @Order(3)
     public void testCreateProduct() throws Exception {
-        mockMvc.perform( post("/products")
+        JSONObject object = new JSONObject();
+        object.put( "name", "pen");
+        object.put( "price", 4.56);
+
+        mockMvc.perform( post("/create")
                         .contentType( MediaType.APPLICATION_JSON)
-                        .content( "{\"name\": \"pen\", \"price\": 4.56}"))
+                        .content( object.toString()))
                 .andExpect( status().isOk())
-                .andExpect( jsonPath("$.name", is("pen")))
-                .andExpect( jsonPath("$.price", is(4.56)));
+                .andExpect( jsonPath("$.name", is( object.getString("name"))))
+                .andExpect( jsonPath("$.price", is( object.getDouble("price"))));
     }
 
     @Test
@@ -75,9 +84,14 @@ public class ProductControllerTest {
     public void testUpdateProduct() throws Exception {
         Product product1 = productRepository.findByName( "pencil");
 
-        mockMvc.perform( put("/products")
+        JSONObject object = new JSONObject();
+        object.put( "id", product1.getId());
+        object.put( "name", "marker");
+        object.put( "price", 5.67);
+
+        mockMvc.perform( post("/update")
                         .contentType( MediaType.APPLICATION_JSON)
-                        .content( "{\"id\": " + product1.getId() + ", \"name\": \"marker\", \"price\": 5.67}"))
+                        .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
     }
@@ -87,8 +101,12 @@ public class ProductControllerTest {
     public void testDeleteProduct() throws Exception {
         Product product1 = productRepository.findByName( "pencil");
 
-        mockMvc.perform( delete("/products/{id}", product1.getId())
-                        .contentType( MediaType.APPLICATION_JSON))
+        JSONObject object = new JSONObject();
+        object.put( "id", product1.getId());
+
+        mockMvc.perform( post("/delete")
+                        .contentType( MediaType.APPLICATION_JSON)
+                        .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
 
