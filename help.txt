@@ -5,12 +5,17 @@ http://localhost:8080/products
 
 ============================================================
 get:
-http://localhost:8080/products/1
+http://localhost:8080/product
+
+body:
+{
+    "id": 5
+}
 
 
 ============================================================
 post:
-http://localhost:8080/products
+http://localhost:8080/create
 
 body:
 {
@@ -20,8 +25,8 @@ body:
 
 
 ============================================================
-put:
-http://localhost:8080/products
+post:
+http://localhost:8080/update
 
 body:
 {
@@ -32,5 +37,10 @@ body:
 
 
 ============================================================
-delete:
-http://localhost:8080/products/2
+post:
+http://localhost:8080/delete
+
+body:
+{
+    "id": 2
+}
