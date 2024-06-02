@@ -4,10 +4,7 @@ import com.example.demo.model.Order;
 import com.example.demo.serivce.OrderService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +18,13 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public List<Order> getAllOrders(@RequestBody Order order) {
+    public List<Order> getAllOrders( @RequestBody Order order) {
         return orderService.getAllOrders();
     }
 
-    @GetMapping("/order")
-    public Order getAllOrderById(@RequestBody Order order) {
-        return orderService.getOrderById( order.getId());
+    @GetMapping("/order/{id}")
+    public Order getAllOrderById( @PathVariable(value = "id") Long id) {
+        return orderService.getOrderById( id);
     }
 
     @PostMapping("/order/add")
@@ -58,5 +55,4 @@ public class OrderController {
 
         return output.toString();
     }
-
 }

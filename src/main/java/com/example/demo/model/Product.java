@@ -19,16 +19,16 @@ public class Product {
     private double price;
 
     @ManyToOne
-    @JoinColumn( name="order_id", nullable=false)
     private Order order;
 
-//    public Product( Long id, String name, double price) {
-//        this.id = id;
-//        this.name = name;
-//        this.price = price;
-//    }
-//
-//    public Product() {}
+    public Product( String name, double price) {
+        super();
+
+        this.name = name;
+        this.price = price;
+    }
+
+    public Product() {}
 
     public Long getId() {
         return id;

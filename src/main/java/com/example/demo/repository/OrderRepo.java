@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface OrderRepo extends JpaRepository<Order, Long> {
-    public Order findByOwner(@Param("owner") String owner);
+    public Order findByOwner( @Param("owner") String owner);
 }
