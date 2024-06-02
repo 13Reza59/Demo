@@ -2,7 +2,6 @@ package com.example.demo.controler;
 
 import com.example.demo.model.Product;
 import com.example.demo.serivce.ProductService;
-import com.example.demo.serivce.ProductServiceImpl;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +27,12 @@ public class ProductController {
         return productService.getProductById( product.getId());
     }
 
-    @PostMapping("/create")
+    @PostMapping("/product/add")
     public Product createProduct( @RequestBody Product product) {
         return productService.createProduct( product);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/product/update")
     public String updateProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
 
@@ -51,7 +50,7 @@ public class ProductController {
 //        productService.deleteProduct( id);
 //    }
 
-    @PostMapping("/delete")
+    @PostMapping("/product/delete")
     public String deleteProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
 

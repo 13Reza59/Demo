@@ -7,13 +7,11 @@ public interface ProductService {
 
     public List<Product> getAllProducts();
 
-    public long getAllProductsCount();
-
     public Product createProduct(Product product);
 
     boolean updateProduct(Product product);
 
-    Product getProductById(long productId);
+    Product getProductById(long id);
 
     boolean deleteProduct(long id);
 

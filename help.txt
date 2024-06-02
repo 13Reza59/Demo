@@ -15,7 +15,7 @@ body:
 
 ============================================================
 post:
-http://localhost:8080/create
+http://localhost:8080/product/add
 
 body:
 {
@@ -26,7 +26,7 @@ body:
 
 ============================================================
 post:
-http://localhost:8080/update
+http://localhost:8080/product/update
 
 body:
 {
@@ -38,9 +38,12 @@ body:
 
 ============================================================
 post:
-http://localhost:8080/delete
+http://localhost:8080/product/delete
 
 body:
 {
     "id": 2
 }
+
+
+============================================================

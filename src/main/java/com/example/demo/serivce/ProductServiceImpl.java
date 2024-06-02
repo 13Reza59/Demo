@@ -32,8 +32,14 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public long getAllProductsCount() {
-        return productRepo.count();
+    public Product getProductById(long id) {
+        Optional<Product> productDb = productRepo.findById(id);
+
+        if (productDb.isPresent()) {
+            return productDb.get();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -57,17 +63,6 @@ public class ProductServiceImpl implements ProductService{
 
         } else
             return false;
-    }
-
-    @Override
-    public Product getProductById(long productId) {
-        Optional<Product> productDb = productRepo.findById( productId);
-
-        if (productDb.isPresent()) {
-            return productDb.get();
-        } else {
-            return null;
-        }
     }
 
 //    @Override
