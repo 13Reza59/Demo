@@ -11,11 +11,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Optional;
 
+import static com.example.demo.model.ERole.ROLE_ADMIN;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -31,11 +35,41 @@ public class ProductControllerTest {
 
     private Product product;
 
+    private String token;
+
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         productRepo.deleteAll();
         product = new Product("pencil",3.45);
+        assertThat( product).isNotNull();
+
         productRepo.save( product);
+        assertThat( product.getId()).isNotNull();
+
+        JSONObject signUpRequestObject = new JSONObject();
+        signUpRequestObject.put( "username", "admin");
+        signUpRequestObject.put( "email", "ad@min.com");
+        signUpRequestObject.put( "role", ROLE_ADMIN.toString());
+        signUpRequestObject.put( "password", "admin");
+
+        mockMvc.perform( post("/signup")
+                        .contentType( MediaType.APPLICATION_JSON)
+                        .content( signUpRequestObject.toString()))
+                .andExpect( status().isOk());
+
+        JSONObject signInRequestObject = new JSONObject();
+        signInRequestObject.put( "username", "admin");
+        signInRequestObject.put( "password", "admin");
+
+        MvcResult result = mockMvc.perform( post("/signin")
+                        .contentType( MediaType.APPLICATION_JSON)
+                        .content( signInRequestObject.toString()))
+                .andExpect( status().isOk())
+                .andReturn();
+
+        JSONObject resultObject = new JSONObject( result.getResponse().getContentAsString());
+        token = resultObject.getString("token");
+        assertNotEquals( "", token);
     }
 
     @Test

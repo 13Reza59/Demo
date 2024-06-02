@@ -20,7 +20,7 @@ class DemoApplicationTests {
 
 	@Test
 	void contextLoads() throws Exception {
-		assertThat(factorRepo).isNotNull();
+		assertThat( factorRepo).isNotNull();
 		assertThat( productRepo).isNotNull();
 
 		Factor factor = new Factor("reza");
