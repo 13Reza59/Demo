@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepo;
 import com.example.demo.serivce.ProductService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,40 +22,41 @@ public class ProductServiceTest {
     @Autowired
     private ProductService productService;
 
+    private Product product;
+
+    @BeforeEach
+    public void setUp() {
+        productRepo.deleteAll();
+        product = new Product( "pencil", 3.45);
+        assertThat( product).isNotNull();
+
+        productRepo.save( product);
+        assertThat( product.getId()).isNotNull();
+    }
+
     @Test
+    @Order(3)
     void testGetAllProducts() {
-        Product product1 = new Product("pencil", 3.45);
-        Product product2 = new Product("pen", 4.56);
-
+        Product product1 = new Product("pen", 4.56);
         assertThat( product1).isNotNull();
-        assertThat( product2).isNotNull();
 
-        List<Product> products = Arrays.asList( product1, product2);
         productService.createProduct( product1);
-        productService.createProduct( product2);
-
-        assertThat( products).isNotNull();
-        assertEquals(2, products.size());
+        assertThat( product1).isNotNull();
 
         List<Product> result = productService.getAllProducts();
         assertEquals(2, result.size());
     }
 
     @Test
+    @Order(2)
     void testGetProductById() {
-        Product product = new Product("pencil", 3.45);
-        assertThat( product).isNotNull();
-
-        productService.createProduct( product);
-        assertThat( product.getId()).isNotNull();
-
-        Product result = productService.getProductById(1L);
+        Product result = productService.getProductById( product.getId());
         assertThat( result).isNotNull();
-
         assertEquals("pencil", result.getName());
     }
 
     @Test
+    @Order(1)
     void testCreateProduct() {
         Product product = new Product("pencil", 3.45);
         assertThat( product).isNotNull();
@@ -65,6 +68,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Order(4)
     void testUpdateProduct() {
         Product product = new Product("pencil",3.45);
         assertThat( product).isNotNull();
@@ -82,6 +86,7 @@ public class ProductServiceTest {
     }
 
     @Test
+    @Order(5)
     void testDeleteProduct() {
         Product product = new Product("pencil",3.45);
         assertThat( product).isNotNull();

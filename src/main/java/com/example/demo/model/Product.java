@@ -2,8 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
-import java.util.Set;
-
 
 @Entity
 @Table(name = "products")
@@ -19,7 +17,7 @@ public class Product {
     private double price;
 
     @ManyToOne
-    private Order order;
+    private Factor factor;
 
     public Product( String name, double price) {
         super();

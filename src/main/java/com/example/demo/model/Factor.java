@@ -6,11 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Table(name = "orders")
-public class Order {
+@Table(name = "factors")
+public class Factor {
     @Id
     @GeneratedValue( strategy = GenerationType.AUTO)
     private Long id;
@@ -22,7 +21,7 @@ public class Order {
     private String owner;
 
 //    @OneToMany( mappedBy = "order", cascade = CascadeType.ALL)
-    @OneToMany( mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany( mappedBy = "factor", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
 //    public Order( Long id, Date date, String owner) {
@@ -31,14 +30,14 @@ public class Order {
 //        this.owner = owner;
 //    }
 
-    public Order( ){
+    public Factor( ){
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDateTime = dateFormat. format( currentDate);
         this.date = currentDate;
     }
 
-    public Order( String owner){
+    public Factor( String owner){
         super();
 
         Date currentDate = new Date();

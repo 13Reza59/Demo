@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepo;
+import com.example.demo.model.Factor;
+import com.example.demo.repository.FactorRepo;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -21,74 +22,72 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProductControllerTest {
+public class FactorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private ProductRepo productRepo;
+    private FactorRepo factorRepo;
 
-    private Product product;
+    private Factor factor;
 
     @BeforeEach
     public void setUp() {
-        productRepo.deleteAll();
-        product = new Product("pencil",3.45);
-        productRepo.save( product);
+        factorRepo.deleteAll();
+        factor = new Factor("reza");
+        assertThat( factor).isNotNull();
+
+        factorRepo.save(factor);
+        assertThat( factor.getId()).isNotNull();
     }
 
     @Test
     @Order(3)
-    public void testGetAllProducts() throws Exception {
-        mockMvc.perform( get("/products")
+    public void testGetAllFactors() throws Exception {
+        mockMvc.perform( get("/factors")
                         .contentType( MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
-                .andExpect( jsonPath("$[0].name", is( product.getName())))
-                .andExpect( jsonPath("$[0].price", is( product.getPrice())));
+                .andExpect( jsonPath("$[0].owner", is( factor.getOwner())));
     }
 
     @Test
     @Order(2)
-    public void testGetProductById() throws Exception {
+    public void testGetFactorById() throws Exception {
 //        JSONObject object = new JSONObject();
 //        object.put( "id", product.getId());
 
-        mockMvc.perform( get("/product/{id}", product.getId())
+        mockMvc.perform( get("/factor/{id}", factor.getId())
                         .contentType( MediaType.APPLICATION_JSON)
 //                        .content( object.toString())
                 )
                 .andExpect( status().isOk())
-                .andExpect( jsonPath("$.name", is( product.getName())))
-                .andExpect( jsonPath("$.price", is( product.getPrice())));
+                .andExpect( jsonPath("$.owner", is( factor.getOwner())));
     }
 
     @Test
     @Order(1)
-    public void testCreateProduct() throws Exception {
+    public void testCreateFactor() throws Exception {
         JSONObject object = new JSONObject();
-        object.put( "name", "pen");
-        object.put( "price", 4.56);
+        object.put( "owner", "reza");
 
-        mockMvc.perform( post("/product/add")
+        mockMvc.perform( post("/factor/add")
                         .contentType( MediaType.APPLICATION_JSON)
                         .content( object.toString()))
                 .andExpect( status().isOk())
-                .andExpect( jsonPath("$.name", is( object.getString("name"))))
-                .andExpect( jsonPath("$.price", is( object.getDouble("price"))));
+                .andExpect( jsonPath("$.owner", is( object.getString("owner"))));
     }
 
     @Test
     @Order(4)
-    public void testUpdateProduct() throws Exception {
-        Product product1 = productRepo.findByName( "pencil");
+    public void testUpdateFactor() throws Exception {
+        Factor factor1 = factorRepo.findByOwner( "reza");
 
         JSONObject object = new JSONObject();
-        object.put( "id", product1.getId());
-        object.put( "name", "marker");
-        object.put( "price", 5.67);
+        object.put( "id", factor1.getId());
+        object.put( "owner", "marker");
 
-        mockMvc.perform( post("/product/update")
+        mockMvc.perform( post("/factor/update")
                         .contentType( MediaType.APPLICATION_JSON)
                         .content( object.toString()))
                 .andExpect( status().isOk())
@@ -97,19 +96,19 @@ public class ProductControllerTest {
 
     @Test
     @Order(5)
-    public void testDeleteProduct() throws Exception {
-        Product product1 = productRepo.findByName( "pencil");
+    public void testDeleteFactor() throws Exception {
+        Factor factor1 = factorRepo.findByOwner( "reza");
 
         JSONObject object = new JSONObject();
-        object.put( "id", product1.getId());
+        object.put( "id", factor1.getId());
 
-        mockMvc.perform( post("/product/delete")
+        mockMvc.perform( post("/factor/delete")
                         .contentType( MediaType.APPLICATION_JSON)
                         .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
 
-        Optional<Product> deletedProduct = productRepo.findById( product.getId());
-        assertEquals(Optional.empty(), deletedProduct);
+        Optional<Factor> deletedFactor = factorRepo.findById( factor.getId());
+        assertEquals(Optional.empty(), deletedFactor);
     }
 }
