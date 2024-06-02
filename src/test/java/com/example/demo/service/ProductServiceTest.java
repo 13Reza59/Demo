@@ -1,107 +1,96 @@
 package com.example.demo.service;
 
-
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepo;
-import com.example.demo.serivce.ProductServiceImpl;
-import org.assertj.core.api.Assertions;
+import com.example.demo.serivce.ProductService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@ExtendWith( MockitoExtension.class)
+@SpringBootTest
 public class ProductServiceTest {
 
-    @Mock
+    @Autowired
     private ProductRepo productRepo;
 
-    @InjectMocks
-    private ProductServiceImpl productServiceImpl;
+    @Autowired
+    private ProductService productService;
 
     @Test
     void testGetAllProducts() {
-        Product product1 = new Product();
-        product1.setName( "pencil");
-        product1.setPrice( 3.45);
+        Product product1 = new Product("pencil", 3.45);
+        Product product2 = new Product("pen", 4.56);
 
-        Product product2 = new Product();
-        product2.setName( "pen");
-        product2.setPrice( 4.56);
+        assertThat( product1).isNotNull();
+        assertThat( product2).isNotNull();
 
         List<Product> products = Arrays.asList( product1, product2);
+        productService.createProduct( product1);
+        productService.createProduct( product2);
 
-        when( productRepo.findAll()).thenReturn( products);
+        assertThat( products).isNotNull();
+        assertEquals(2, products.size());
 
-        List<Product> result = productServiceImpl.getAllProducts();
-
+        List<Product> result = productService.getAllProducts();
         assertEquals(2, result.size());
-        verify(productRepo, times(1)).findAll();
     }
 
     @Test
     void testGetProductById() {
-        Product product = new Product();
-        product.setId( 1L);
-        product.setName( "pencil");
-        product.setPrice( 3.45);
+        Product product = new Product("pencil", 3.45);
+        assertThat( product).isNotNull();
 
-        when( productRepo.findById( 1L)).thenReturn( Optional.of( product));
+        productService.createProduct( product);
+        assertThat( product.getId()).isNotNull();
 
-        Product result = productServiceImpl.getProductById(1L);
+        Product result = productService.getProductById(1L);
+        assertThat( result).isNotNull();
 
         assertEquals("pencil", result.getName());
-        verify(productRepo, times(1)).findById( 1L);
     }
 
     @Test
     void testCreateProduct() {
-        Product product = new Product();
-        product.setName( "pencil");
-        product.setPrice( 3.45);
+        Product product = new Product("pencil", 3.45);
+        assertThat( product).isNotNull();
 
-        when( productRepo.save( product)).thenReturn( product);
-
-        Product result = productServiceImpl.createProduct( product);
+        Product result = productService.createProduct( product);
+        assertThat( result).isNotNull();
 
         assertEquals("pencil", result.getName());
-        verify(productRepo, times(1)).save( product);
     }
 
     @Test
     void testUpdateProduct() {
-        Product product = new Product();
-        product.setName( "pencil");
-        product.setPrice( 3.45);
+        Product product = new Product("pencil",3.45);
+        assertThat( product).isNotNull();
 
-        when( productRepo.save( product)).thenReturn( product);
+        productService.createProduct( product);
+        assertThat( product).isNotNull();
+        assertThat( product.getId()).isNotNull();
 
         product.setPrice( 4.56);
+        boolean ret = productService.updateProduct( product);
+        assertEquals(true, ret);
 
-        Product product1 = productRepo.save( product);
-
-        Assertions.assertThat( product1.getPrice()).isEqualTo(4.56);
+        Product product1 = productService.getProductById( product.getId());
+        assertEquals(4.56, product1.getPrice());
     }
 
     @Test
     void testDeleteProduct() {
-        Long productId = 1L;
+        Product product = new Product("pencil",3.45);
+        assertThat( product).isNotNull();
 
-        doNothing().when(productRepo).deleteById( productId);
-//        when( productRepository.deleteById( productId)).then( "{ result: \"OK\" }")));
+        productService.createProduct( product);
+        assertThat( product).isNotNull();
+        assertThat( product.getId()).isNotNull();
 
-        productServiceImpl.deleteProduct( productId);
-
-        verify(productRepo).deleteById( productId);
+        boolean ret = productService.deleteProduct( product.getId());
+        assertEquals(true, ret);
     }
 }
