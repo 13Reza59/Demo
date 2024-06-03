@@ -21,25 +21,25 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-//    @PreAuthorize( "hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize( "hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Product getAllProductById( @PathVariable(value = "id") Long id) {
         return productService.getProductById( id);
     }
 
     @PostMapping("/add")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Product createProduct( @RequestBody Product product) {
         return productService.createProduct( product);
     }
 
     @PostMapping("/update")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String updateProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
 
@@ -52,7 +52,7 @@ public class ProductController {
     }
 
     @PostMapping("/delete")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
 

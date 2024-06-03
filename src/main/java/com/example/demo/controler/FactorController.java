@@ -21,25 +21,25 @@ public class FactorController {
     }
 
     @GetMapping("/all")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<Factor> getAllFactors() {
         return factorService.getAllFactors();
     }
 
     @GetMapping("/{id}")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Factor getAllFactorById( @PathVariable(value = "id") Long id) {
         return factorService.getFactorById( id);
     }
 
     @PostMapping("/add")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Factor createFactor( @RequestBody Factor factor) {
         return factorService.createFactor( factor);
     }
 
     @PostMapping("/update")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String updateFactor( @RequestBody Factor factor) {
         JSONObject output = new JSONObject();
 
@@ -52,7 +52,7 @@ public class FactorController {
     }
 
     @PostMapping("/delete")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteFactor( @RequestBody Factor factor) {
         JSONObject output = new JSONObject();
 
