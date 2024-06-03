@@ -1,4 +1,4 @@
-package com.example.demo.security.services;
+package com.example.demo.serivce;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepo;
@@ -12,16 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-  @Autowired
-  UserRepo userRepo;
+	@Autowired
+	UserRepo userRepo;
 
-  @Override
-  @Transactional
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = userRepo.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+	@Override
+	@Transactional
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepo.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
-    return UserDetailsImpl.build(user);
-  }
+		return UserDetailsImpl.build(user);
+	}
 
 }
