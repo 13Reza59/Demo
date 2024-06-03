@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/product")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -18,26 +20,26 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/all")
+//    @PreAuthorize( "hasRole('USER') or hasRole('ADMIN')")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/product/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/{id}")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Product getAllProductById( @PathVariable(value = "id") Long id) {
         return productService.getProductById( id);
     }
 
-    @PostMapping("/product/add")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping("/add")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Product createProduct( @RequestBody Product product) {
         return productService.createProduct( product);
     }
 
-    @PostMapping("/product/update")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping("/update")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String updateProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
 
@@ -49,8 +51,8 @@ public class ProductController {
         return output.toString();
     }
 
-    @PostMapping("/product/delete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/delete")
+//    @PreAuthorize("hasRole('ADMIN')")
     public String deleteProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
 

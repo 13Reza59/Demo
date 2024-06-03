@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -10,10 +11,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
+    @Size(max = 64)
     private String name;
 
-    @Column(name = "price")
     private double price;
 
     @ManyToOne
@@ -51,5 +51,4 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-// Getters and setters
 }

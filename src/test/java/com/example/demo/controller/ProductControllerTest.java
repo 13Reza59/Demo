@@ -13,9 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.example.demo.model.ERole.ROLE_ADMIN;
+import static com.example.demo.model.ERole.ADMIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,6 +42,7 @@ public class ProductControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
+        //add a product
         productRepo.deleteAll();
         product = new Product("pencil",3.45);
         assertThat( product).isNotNull();
@@ -46,37 +50,46 @@ public class ProductControllerTest {
         productRepo.save( product);
         assertThat( product.getId()).isNotNull();
 
-        JSONObject signUpRequestObject = new JSONObject();
-        signUpRequestObject.put( "username", "admin");
-        signUpRequestObject.put( "email", "ad@min.com");
-        signUpRequestObject.put( "role", ROLE_ADMIN.toString());
-        signUpRequestObject.put( "password", "admin");
+        //signup an account
+        ArrayList<String> roles = new ArrayList<>();
+        roles.add( "\"ADMIN\"");
+        roles.add( "\"USER\"");
 
-        mockMvc.perform( post("/signup")
+        final Map<String, Object> signupBody = new HashMap<>();
+        signupBody.put( "\"username\"", "\"admin\"");
+        signupBody.put( "\"email\"", "\"ad@min.com\"");
+        signupBody.put( "\"role\"", roles);
+        signupBody.put( "\"password\"", "\"admin\"");
+
+        mockMvc.perform( post("/auth/signup")
                         .contentType( MediaType.APPLICATION_JSON)
-                        .content( signUpRequestObject.toString()))
+                        .content( signupBody.toString()))
                 .andExpect( status().isOk());
 
-        JSONObject signInRequestObject = new JSONObject();
-        signInRequestObject.put( "username", "admin");
-        signInRequestObject.put( "password", "admin");
+        //login to that account
+        final Map<String, Object> loginBody = new HashMap<>();
+        loginBody.put( "\"username\"", "\"admin\"");
+        loginBody.put( "\"password\"", "\"admin\"");
 
-        MvcResult result = mockMvc.perform( post("/signin")
+        MvcResult result = mockMvc.perform( post("/auth/login")
                         .contentType( MediaType.APPLICATION_JSON)
-                        .content( signInRequestObject.toString()))
+                        .content( loginBody.toString()))
                 .andExpect( status().isOk())
                 .andReturn();
 
+        //save the token
         JSONObject resultObject = new JSONObject( result.getResponse().getContentAsString());
-        token = resultObject.getString("token");
-        assertNotEquals( "", token);
+        token = resultObject.getString("accessToken");
+        assertThat(token).isNotEmpty();
     }
 
     @Test
     @Order(3)
     public void testGetAllProducts() throws Exception {
-        mockMvc.perform( get("/products")
-                        .contentType( MediaType.APPLICATION_JSON))
+        mockMvc.perform( get("/product/all")
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$[0].name", is( product.getName())))
                 .andExpect( jsonPath("$[0].price", is( product.getPrice())));
@@ -85,12 +98,10 @@ public class ProductControllerTest {
     @Test
     @Order(2)
     public void testGetProductById() throws Exception {
-//        JSONObject object = new JSONObject();
-//        object.put( "id", product.getId());
-
         mockMvc.perform( get("/product/{id}", product.getId())
-                        .contentType( MediaType.APPLICATION_JSON)
-//                        .content( object.toString())
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
                 )
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.name", is( product.getName())))
@@ -105,8 +116,10 @@ public class ProductControllerTest {
         object.put( "price", 4.56);
 
         mockMvc.perform( post("/product/add")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( object.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.name", is( object.getString("name"))))
                 .andExpect( jsonPath("$.price", is( object.getDouble("price"))));
@@ -123,8 +136,10 @@ public class ProductControllerTest {
         object.put( "price", 5.67);
 
         mockMvc.perform( post("/product/update")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( object.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
     }
@@ -138,8 +153,10 @@ public class ProductControllerTest {
         object.put( "id", product1.getId());
 
         mockMvc.perform( post("/product/delete")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( object.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
 

@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Factor;
 import com.example.demo.repository.FactorRepo;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
@@ -14,9 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.example.demo.model.ERole.ROLE_ADMIN;
+import static com.example.demo.model.ERole.ADMIN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,37 +49,50 @@ public class FactorControllerTest {
         factorRepo.save(factor);
         assertThat( factor.getId()).isNotNull();
 
-        JSONObject signUpRequestObject = new JSONObject();
-        signUpRequestObject.put( "username", "admin");
-        signUpRequestObject.put( "email", "ad@min.com");
-        signUpRequestObject.put( "role", ROLE_ADMIN.toString());
-        signUpRequestObject.put( "password", "admin");
+        //signup an account
+        ArrayList<String> roles = new ArrayList<String>();
+        roles.add( "\"ADMIN\"");
+        roles.add( "\"USER\"");
+
+        final Map<String, Object> signupBody = new HashMap<>();
+        signupBody.put( "\"username\"", "\"admin\"");
+        signupBody.put( "\"email\"", "\"ad@min.com\"");
+        signupBody.put( "\"role\"", roles);
+        signupBody.put( "\"password\"", "\"admin\"");
 
         mockMvc.perform( post("/signup")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( signUpRequestObject.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( signupBody.toString()))
                 .andExpect( status().isOk());
 
+        //login to that account
         JSONObject signInRequestObject = new JSONObject();
-        signInRequestObject.put( "username", "admin");
-        signInRequestObject.put( "password", "admin");
+        final Map<String, Object> loginBody = new HashMap<>();
+        loginBody.put( "\"username\"", "\"admin\"");
+        loginBody.put( "\"password\"", "\"admin\"");
 
         MvcResult result = mockMvc.perform( post("/signin")
-                                    .contentType( MediaType.APPLICATION_JSON)
-                                    .content( signInRequestObject.toString()))
-                                .andExpect( status().isOk())
-                                .andReturn();
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( loginBody.toString()))
+                .andExpect( status().isOk())
+                .andReturn();
 
         JSONObject resultObject = new JSONObject( result.getResponse().getContentAsString());
-        token = resultObject.getString("token");
+        token = resultObject.getString("accessToken");
         assertNotEquals( "", token);
     }
 
     @Test
     @Order(3)
     public void testGetAllFactors() throws Exception {
-        mockMvc.perform( get("/factors")
-                        .contentType( MediaType.APPLICATION_JSON))
+        mockMvc.perform( get("/factor/all")
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$[0].owner", is( factor.getOwner())));
     }
@@ -89,8 +104,10 @@ public class FactorControllerTest {
 //        object.put( "id", product.getId());
 
         mockMvc.perform( get("/factor/{id}", factor.getId())
-                        .contentType( MediaType.APPLICATION_JSON)
-//                        .content( object.toString())
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+//                  .content( object.toString())
                 )
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.owner", is( factor.getOwner())));
@@ -103,8 +120,10 @@ public class FactorControllerTest {
         object.put( "owner", "reza");
 
         mockMvc.perform( post("/factor/add")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( object.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$.owner", is( object.getString("owner"))));
     }
@@ -119,8 +138,10 @@ public class FactorControllerTest {
         object.put( "owner", "marker");
 
         mockMvc.perform( post("/factor/update")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( object.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
     }
@@ -134,8 +155,10 @@ public class FactorControllerTest {
         object.put( "id", factor1.getId());
 
         mockMvc.perform( post("/factor/delete")
-                        .contentType( MediaType.APPLICATION_JSON)
-                        .content( object.toString()))
+                    .header("AuthType", "Bearer")
+                    .header("Authorization", token)
+                    .contentType( MediaType.APPLICATION_JSON)
+                    .content( object.toString()))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath( "$.result", is("OK")));
 

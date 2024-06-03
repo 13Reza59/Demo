@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@RequestMapping("/factor")
 public class FactorController {
     @Autowired
     private FactorService factorService;
@@ -18,26 +20,26 @@ public class FactorController {
         this.factorService = factorService;
     }
 
-    @GetMapping("/factors")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/all")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public List<Factor> getAllFactors() {
         return factorService.getAllFactors();
     }
 
-    @GetMapping("/factor/{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @GetMapping("/{id}")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Factor getAllFactorById( @PathVariable(value = "id") Long id) {
         return factorService.getFactorById( id);
     }
 
-    @PostMapping("/factor/add")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping("/add")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Factor createFactor( @RequestBody Factor factor) {
         return factorService.createFactor( factor);
     }
 
-    @PostMapping("/factor/update")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PostMapping("/update")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String updateFactor( @RequestBody Factor factor) {
         JSONObject output = new JSONObject();
 
@@ -49,8 +51,8 @@ public class FactorController {
         return output.toString();
     }
 
-    @PostMapping("/factor/delete")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/delete")
+//    @PreAuthorize("hasRole('ADMIN')")
     public String deleteFactor( @RequestBody Factor factor) {
         JSONObject output = new JSONObject();
 

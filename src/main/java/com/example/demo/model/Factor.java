@@ -14,40 +14,32 @@ public class Factor {
     @GeneratedValue( strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "date")
-    private Date date;
+    private String date;
 
-    @Column(name = "owner")
+    @Column(length = 32)
     private String owner;
 
-//    @OneToMany( mappedBy = "order", cascade = CascadeType.ALL)
     @OneToMany( mappedBy = "factor", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
-//    public Order( Long id, Date date, String owner) {
-//        this.id = id;
-//        this.date = date;
-//        this.owner = owner;
-//    }
 
     public Factor( ){
         Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentDateTime = dateFormat. format( currentDate);
-        this.date = currentDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDateTime = dateFormat.format( currentDate);
+        this.date = currentDateTime;
     }
 
     public Factor( String owner){
         super();
 
         Date currentDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentDateTime = dateFormat. format( currentDate);
-        this.date = currentDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDateTime = dateFormat.format( currentDate);
+        this.date = currentDateTime;
 
         this.owner = owner;
     }
-
 
     public Long getId() {
         return id;
@@ -57,11 +49,11 @@ public class Factor {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

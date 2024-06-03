@@ -14,6 +14,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+
 @Component
 public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
@@ -32,12 +33,12 @@ public class JwtUtils {
         .setSubject((userPrincipal.getUsername()))
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-        .signWith(key(), SignatureAlgorithm.HS256)
+        .signWith( key(), SignatureAlgorithm.HS256)
         .compact();
   }
   
   private Key key() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    return Keys.hmacShaKeyFor( Decoders.BASE64.decode( jwtSecret));
   }
 
   public String getUserNameFromJwtToken(String token) {

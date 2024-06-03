@@ -1,21 +1,70 @@
 ============================================================
-get:
-http://localhost:8080/products
+post:
+http://localhost:8080/auth/signup
+
+body:
+{
+    "username": "admin",
+    "email": "ad@min.com",
+    "password": "admin",
+    "role": [ "USER", "ADMIN"]
+}
+
+
+============================================================
+post:
+http://localhost:8080/auth/login
+
+body:
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+response:
+{
+    "id":1,
+    "username":"admin",
+    "email":"ad@min.com",
+    "roles":["USER","ADMIN"],
+    "tokenType":"Bearer",
+    "accessToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY"
+}
 
 
 ============================================================
 get:
-http://localhost:8080/product
+http://localhost:8080/product/all
 
-body:
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+
+============================================================
+get:
+http://localhost:8080/product/1
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+response:
 {
-    "id": 5
+    "id": 1,
+    "name": "saiead",
+    "price": 4.56
 }
 
 
 ============================================================
 post:
 http://localhost:8080/product/add
+
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
 
 body:
 {
@@ -27,6 +76,11 @@ body:
 ============================================================
 post:
 http://localhost:8080/product/update
+
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
 
 body:
 {
@@ -40,10 +94,120 @@ body:
 post:
 http://localhost:8080/product/delete
 
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
 body:
 {
     "id": 2
 }
 
+
+============================================================
+get:
+http://localhost:8080/factor/all
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+response:
+[
+    {
+        "id":1,
+        "date":"2024-06-03",
+        "owner":"reza",
+        "products":[]
+    },
+    {
+        "id":2,
+        "date":"2024-06-03",
+        "owner":"reza",
+        "products":[]
+    }
+]
+
+============================================================
+get:
+http://localhost:8080/factor/1
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+response:
+{
+    "id":1,
+    "date":"2024-06-03",
+    "owner":"reza",
+    "products":[]
+}
+
+
+============================================================
+post:
+http://localhost:8080/factor/add
+
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+body:
+{
+    "owner": "reza"
+}
+
+response:
+{
+    "id":1,
+    "date":"2024-06-03",
+    "owner":"reza",
+    "products":[]
+}
+
+
+============================================================
+post:
+http://localhost:8080/factor/update
+
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+body:
+{
+    "id":1,
+    "owner":"saied"
+}
+
+response:
+{
+    "result":"OK"
+}
+
+
+============================================================
+post:
+http://localhost:8080/factor/delete
+
+
+header:
+AuthType        :   Bearer
+Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDgwNCwiZXhwIjoxNzE3NTAxMjA0fQ.nYqCO6G5hgNLeGm3UcmPTLKV7OPPK7MNjtuMHoufiiY
+
+body:
+{
+    "id": 2
+}
+
+
+response:
+{
+    "result":"OK"
+}
 
 ============================================================
