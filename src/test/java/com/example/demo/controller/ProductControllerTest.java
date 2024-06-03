@@ -21,7 +21,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -51,8 +50,8 @@ public class ProductControllerTest {
 
         //signup an account
         ArrayList<String> roles = new ArrayList<>();
-        roles.add( "\"ADMIN\"");
-        roles.add( "\"USER\"");
+        roles.add( "\"ROLE_ADMIN\"");
+        roles.add( "\"ROLE_USER\"");
 
         final Map<String, Object> signupBody = new HashMap<>();
         signupBody.put( "\"username\"", "\"admin\"");
