@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,8 +46,6 @@ public class FactorControllerTest {
     private Product product;
     private Product product1;
 
-    private String token;
-
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -68,65 +67,31 @@ public class FactorControllerTest {
 
         factorRepo.save( factor);
         assertThat( factor.getId()).isNotNull();
-
-        //signup an account
-        ArrayList<String> roles = new ArrayList<String>();
-        roles.add( "\"ROLE_USER\"");
-        roles.add( "\"ROLE_ADMIN\"");
-
-        final Map<String, Object> signupBody = new HashMap<>();
-        signupBody.put( "\"username\"", "\"admin\"");
-        signupBody.put( "\"email\"", "\"ad@min.com\"");
-        signupBody.put( "\"role\"", roles);
-        signupBody.put( "\"password\"", "\"admin\"");
-
-        mockMvc.perform( post("/auth/signup")
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
-                    .contentType( MediaType.APPLICATION_JSON)
-                    .content( signupBody.toString()))
-                .andExpect( status().isOk());
-
-        //login to that account
-        JSONObject signInRequestObject = new JSONObject();
-        final Map<String, Object> loginBody = new HashMap<>();
-        loginBody.put( "\"username\"", "\"admin\"");
-        loginBody.put( "\"password\"", "\"admin\"");
-
-        MvcResult result = mockMvc.perform( post("/auth/signin")
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
-                    .contentType( MediaType.APPLICATION_JSON)
-                    .content( loginBody.toString()))
-                .andExpect( status().isOk())
-                .andReturn();
-
-        JSONObject resultObject = new JSONObject( result.getResponse().getContentAsString());
-        token = resultObject.getString("accessToken");
-        assertNotEquals( "", token);
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(3)
     public void testGetAllFactors() throws Exception {
         mockMvc.perform( get("/factor/all")
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
+//                    .header("AuthType", "Bearer")
+//                    .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$[0].owner", is( factor.getOwner())));
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(2)
     public void testGetFactorById() throws Exception {
 //        JSONObject object = new JSONObject();
 //        object.put( "id", product.getId());
 
         mockMvc.perform( get("/factor/{id}", factor.getId())
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
-                    .contentType( MediaType.APPLICATION_JSON)
+//                    .header("AuthType", "Bearer")
+//                    .header("Authorization", token)
+//                    .contentType( MediaType.APPLICATION_JSON)
 //                  .content( object.toString())
                 )
                 .andExpect( status().isOk())
@@ -134,18 +99,17 @@ public class FactorControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(1)
     public void testCreateFactor() throws Exception {
         Factor factor1 = new Factor("masoud");
-        factor1.getProducts().add( product);
-        factor1.getProducts().add( product1);
+        factor1.getProducts().add( new Product("chair",35.6));
+        factor1.getProducts().add( new Product("table",21.5));
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString( factor1);
 
         mockMvc.perform( post("/factor/add")
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON)
                     .content( json))
                 .andExpect( status().isOk())
@@ -153,6 +117,7 @@ public class FactorControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(4)
     public void testUpdateFactor() throws Exception {
         Factor factor1 = factorRepo.findByOwner( "reza");
@@ -162,8 +127,6 @@ public class FactorControllerTest {
         object.put( "owner", "marker");
 
         mockMvc.perform( post("/factor/update")
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON)
                     .content( object.toString()))
                 .andExpect( status().isOk())
@@ -171,6 +134,7 @@ public class FactorControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(5)
     public void testDeleteFactor() throws Exception {
         Factor factor1 = factorRepo.findByOwner( "reza");
@@ -179,8 +143,6 @@ public class FactorControllerTest {
         object.put( "id", factor1.getId());
 
         mockMvc.perform( post("/factor/delete")
-                    .header("AuthType", "Bearer")
-                    .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON)
                     .content( object.toString()))
                 .andExpect( status().isOk())
