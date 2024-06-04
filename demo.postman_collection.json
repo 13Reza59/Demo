@@ -224,7 +224,8 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -233,18 +234,16 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 2\n}",
+							"raw": "{\n    \"id\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -269,7 +268,7 @@
 			]
 		},
 		{
-			"name": "Order",
+			"name": "Factor",
 			"item": [
 				{
 					"name": "getAllFactors",
@@ -359,7 +358,8 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -368,18 +368,16 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"owner\": \"reza\"\n}",
+							"raw": "{\n    \"owner\": \"reza\",\n    \"products\":[\n        {\n            \"id\": 1,\n            \"name\": \"reza\",\n            \"price\": 3.16\n        },\n        {\n            \"id\": 2,\n            \"name\": \"reza\",\n            \"price\": 3.16\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -536,7 +534,8 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -545,7 +544,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"ad@min.com\",\n    \"password\": \"admin\",\n    \"role\": [ \"ROLE_USER\", \"ROLE_ADMIN\"]\n}",
+							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"ad@min.com\",\n    \"password\": \"admin\",\n    \"role\": [ \"ROLE_USER\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -579,7 +578,8 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -611,6 +611,40 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "help",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/help",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"help"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -636,7 +670,7 @@
 	"variable": [
 		{
 			"key": "token",
-			"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQyNzcxOCwiZXhwIjoxNzE3NTE0MTE4fQ.IXGRnfqNYRAZHSmDcQgTaEwMi9nn9_5Ak4YZy5e8Tq0"
+			"value": ""
 		}
 	]
 }

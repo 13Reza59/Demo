@@ -104,7 +104,7 @@ public class ProductControllerTest {
     @Test
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(5)
-    public void testDeleteProduct() throws Exception {
+    public void testDeleteProductAdmin() throws Exception {
         Product product1 = productRepo.findByName( "pencil");
 
         JSONObject object = new JSONObject();
@@ -119,4 +119,20 @@ public class ProductControllerTest {
         Optional<Product> deletedProduct = productRepo.findById( product.getId());
         assertEquals(Optional.empty(), deletedProduct);
     }
+
+    @Test
+    @WithMockUser(username = "admin", password = "admin", roles = "USER")
+    @Order(5)
+    public void testDeleteProductUser() throws Exception {
+        Product product1 = productRepo.findByName( "pencil");
+
+        JSONObject object = new JSONObject();
+        object.put( "id", product1.getId());
+
+        mockMvc.perform( post("/product/delete")
+                        .contentType( MediaType.APPLICATION_JSON)
+                        .content( object.toString()))
+                .andExpect( status().isForbidden());
+    }
+
 }
