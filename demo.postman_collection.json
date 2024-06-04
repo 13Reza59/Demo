@@ -377,7 +377,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"owner\": \"reza\",\n    \"products\":[\n        {\n            \"id\": 1,\n            \"name\": \"reza\",\n            \"price\": 3.16\n        },\n        {\n            \"id\": 2,\n            \"name\": \"reza\",\n            \"price\": 3.16\n        }\n    ]\n}",
+							"raw": "{\n    \"owner\": \"reza\",\n    \"products\":[\n        {\n            \"name\": \"reza\",\n            \"price\": 3.16\n        },\n        {\n            \"name\": \"reza\",\n            \"price\": 3.16\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -630,7 +630,7 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:8080/help",

@@ -65,7 +65,7 @@ public class AuthControllerTest {
     @Test
     @Order(3)
     public void testAuthenticateDuplicateUser()throws Exception{
-        User user = new User("admin1","ad@min1.com", "admin1");
+        User user = new User("admin2","ad@min2.com", "admin2");
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(user);

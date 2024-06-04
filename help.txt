@@ -163,9 +163,18 @@ Authorization   :   eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQxNDg
 
 body:
 {
-    "owner": "reza"
+    "owner": "reza",
+    "products":[
+        {
+            "name": "reza",
+            "price": 3.16
+        },
+        {
+            "name": "reza",
+            "price": 3.16
+        }
+    ]
 }
-
 response:
 {
     "id":1,
