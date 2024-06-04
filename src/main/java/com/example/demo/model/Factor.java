@@ -22,6 +22,7 @@ public class Factor {
     @OneToMany( mappedBy = "factor", cascade = CascadeType.ALL)
     private List<Product> products = new ArrayList<>();
 
+    private double sumTotal;
 
     public Factor( ){
         Date currentDate = new Date();
@@ -71,5 +72,21 @@ public class Factor {
 
     public void setProducts( List<Product> products) {
         this.products = products;
+    }
+
+    public double getSumTotal() {
+        CalculateSumTotal();
+        return sumTotal;
+    }
+
+    public void setSumTotal(double sumTotal) {
+        this.sumTotal = sumTotal;
+    }
+
+    private void CalculateSumTotal() {
+        sumTotal = 0.0;
+        for ( Product product : products )
+            sumTotal += product.getPrice();
+
     }
 }

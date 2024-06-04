@@ -40,7 +40,7 @@ public class ProductControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-        //add a product
+        //create a product
         productRepo.deleteAll();
         product = new Product("pencil",3.45);
         assertThat( product).isNotNull();

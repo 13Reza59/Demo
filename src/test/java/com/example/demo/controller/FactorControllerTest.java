@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Factor;
+import com.example.demo.model.Product;
 import com.example.demo.repository.FactorRepo;
+import com.example.demo.repository.ProductRepo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
@@ -12,11 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -37,21 +39,40 @@ public class FactorControllerTest {
 
     private Factor factor;
 
+    @Autowired
+    private ProductRepo productRepo;
+
+    private Product product;
+    private Product product1;
+
     private String token;
+
 
     @BeforeEach
     public void setUp() throws Exception {
+        //add a factor
         factorRepo.deleteAll();
         factor = new Factor("reza");
         assertThat( factor).isNotNull();
 
-        factorRepo.save(factor);
+        //create products
+        productRepo.deleteAll();
+        product = new Product("pencil",3.45);
+        assertThat( product).isNotNull();
+
+        product1 = new Product("pen",4.56);
+        assertThat( product1).isNotNull();
+
+        factor.getProducts().add( product);
+        factor.getProducts().add( product1);
+
+        factorRepo.save( factor);
         assertThat( factor.getId()).isNotNull();
 
         //signup an account
         ArrayList<String> roles = new ArrayList<String>();
-        roles.add( "\"ADMIN\"");
-        roles.add( "\"USER\"");
+        roles.add( "\"ROLE_USER\"");
+        roles.add( "\"ROLE_ADMIN\"");
 
         final Map<String, Object> signupBody = new HashMap<>();
         signupBody.put( "\"username\"", "\"admin\"");
@@ -59,7 +80,7 @@ public class FactorControllerTest {
         signupBody.put( "\"role\"", roles);
         signupBody.put( "\"password\"", "\"admin\"");
 
-        mockMvc.perform( post("/signup")
+        mockMvc.perform( post("/auth/signup")
                     .header("AuthType", "Bearer")
                     .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON)
@@ -72,7 +93,7 @@ public class FactorControllerTest {
         loginBody.put( "\"username\"", "\"admin\"");
         loginBody.put( "\"password\"", "\"admin\"");
 
-        MvcResult result = mockMvc.perform( post("/signin")
+        MvcResult result = mockMvc.perform( post("/auth/signin")
                     .header("AuthType", "Bearer")
                     .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON)
@@ -115,16 +136,20 @@ public class FactorControllerTest {
     @Test
     @Order(1)
     public void testCreateFactor() throws Exception {
-        JSONObject object = new JSONObject();
-        object.put( "owner", "reza");
+        Factor factor1 = new Factor("masoud");
+        factor1.getProducts().add( product);
+        factor1.getProducts().add( product1);
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString( factor1);
 
         mockMvc.perform( post("/factor/add")
                     .header("AuthType", "Bearer")
                     .header("Authorization", token)
                     .contentType( MediaType.APPLICATION_JSON)
-                    .content( object.toString()))
+                    .content( json))
                 .andExpect( status().isOk())
-                .andExpect( jsonPath("$.owner", is( object.getString("owner"))));
+                .andExpect( jsonPath("$.owner").value( factor1.getOwner()));
     }
 
     @Test
