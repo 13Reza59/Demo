@@ -1,11 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Factor;
 import com.example.demo.model.User;
-import com.example.demo.repository.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.hamcrest.Matchers.is;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,9 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserRepo userRepo;
 
     private User user;
 
@@ -54,7 +45,7 @@ public class AuthControllerTest {
     @Test
     @Order(2)
     public void testAuthenticateUser()throws Exception{
-        user = new User("admin","ad@min.com", "admin");
+        User user = new User("admin1","ad@min1.com", "admin1");
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(user);
@@ -70,4 +61,24 @@ public class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
     }
+
+    @Test
+    @Order(3)
+    public void testAuthenticateDuplicateUser()throws Exception{
+        User user = new User("admin1","ad@min1.com", "admin1");
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(user);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest());
+    }
+
 }

@@ -122,7 +122,7 @@ public class ProductControllerTest {
 
     @Test
     @WithMockUser(username = "admin", password = "admin", roles = "USER")
-    @Order(5)
+    @Order(6)
     public void testDeleteProductUser() throws Exception {
         Product product1 = productRepo.findByName( "pencil");
 

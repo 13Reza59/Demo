@@ -15,7 +15,7 @@ import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.repository.RoleRepo;
 import com.example.demo.repository.UserRepo;
 import com.example.demo.security.jwt.JwtUtils;
-import com.example.demo.serivce.UserDetailsImpl;
+import com.example.demo.model.UserDetailsImpl;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

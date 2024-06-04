@@ -1,6 +1,5 @@
-package com.example.demo.serivce;
+package com.example.demo.model;
 
-import com.example.demo.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

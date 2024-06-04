@@ -1,6 +1,6 @@
 package com.example.demo.security.jwt;
 
-import com.example.demo.serivce.UserDetailsImpl;
+import com.example.demo.model.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -143,7 +143,7 @@ public class FactorControllerTest {
 
     @Test
     @WithMockUser(username = "admin", password = "admin", roles = "USER")
-    @Order(5)
+    @Order(6)
     public void testDeleteFactorUser() throws Exception {
         Factor factor1 = factorRepo.findByOwner("reza");
 
