@@ -1,8 +1,11 @@
 package com.example.demo.serivce;
 
+import ch.qos.logback.classic.Logger;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepo;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,23 +14,18 @@ import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService{
+    private static final Logger logger
+            = (Logger) LoggerFactory.getLogger( ProductService.class);
+
     @Autowired
     private ProductRepo productRepo;
 
     @Override
     public List<Product> getAllProducts() {
-//        List<Product> data = new ArrayList<>();
-//        Product product = new Product(1L, "test", 2.34);
-//        Product product2 = new Product(2L, "test2", 21.34);
-//        data.add( product);
-//        data.add( product2);
-//        return data;
-
-//        List<Product> data = productRepository.findAll();
-//        return data;
 
         List<Product> products = new ArrayList<>();
         productRepo.findAll().forEach( products::add);
+        logger.info("{} Products Returned", products.size());
         return products;
     }
 
@@ -36,22 +34,22 @@ public class ProductServiceImpl implements ProductService{
         Optional<Product> productDb = productRepo.findById(id);
 
         if (productDb.isPresent()) {
+            logger.info("Product {} Returned", productRepo.findById(id));
             return productDb.get();
         } else {
+            logger.info("Product {} Not Exist", id);
             return null;
         }
     }
 
     @Override
     public Product createProduct(Product product) {
+        logger.info("Product {} Created", product);
         return productRepo.save(product);
     }
 
     @Override
     public boolean updateProduct(Product product) {
-        if( !productRepo.existsById( product.getId()))
-            return false;
-
         Optional<Product> productDb = productRepo.findById( product.getId());
 
         if( productDb.isPresent()) {
@@ -59,24 +57,24 @@ public class ProductServiceImpl implements ProductService{
             productUpdate.setName( product.getName());
             productUpdate.setPrice( product.getPrice());
             productRepo.save( productUpdate);
+            logger.info("Factor {} Updated", product);
             return true;
 
-        } else
+        } else {
+            logger.info("Factor {} Not Exist to Update", product.getId());
             return false;
+        }
     }
-
-//    @Override
-//    public boolean deleteProduct(long id) {
-//        if( productRepository.existsById( id)) {
-//            productRepository.deleteById( id);
-//            return !productRepository.existsById( id);
-//        } else
-//            return false;
-//    }
 
     @Override
     public boolean deleteProduct(long id) {
+        if( !productRepo.existsById( id)) {
+            logger.info("Product {} Not Exist to Delete", id);
+            return false;
+        }
+
         productRepo.deleteById( id);
+        logger.info("Product {} Deleted", id);
         return !productRepo.existsById( id);
     }
 }

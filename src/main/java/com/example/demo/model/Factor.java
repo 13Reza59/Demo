@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import jakarta.persistence.*;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +42,11 @@ public class Factor {
         this.date = currentDateTime;
 
         this.owner = owner;
+    }
+
+    @Override
+    public String toString() {
+        return "Factor [id= " + id + ", date= " + date + ", owner= " + owner + ", products= " + products.size() + ", sumTotal= " + sumTotal + " ]";
     }
 
     public Long getId() {
