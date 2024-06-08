@@ -71,7 +71,7 @@ public class FactorControllerTest {
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(3)
     public void testGetAllFactors() throws Exception {
-        mockMvc.perform(get("/factor/all")
+        mockMvc.perform( get("/factor")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].owner", is(factor.getOwner())));
@@ -81,7 +81,7 @@ public class FactorControllerTest {
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(2)
     public void testGetFactorById() throws Exception {
-        mockMvc.perform(get("/factor/{id}", factor.getId())
+        mockMvc.perform( get("/factor/{id}", factor.getId())
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.owner", is(factor.getOwner())));
@@ -98,7 +98,7 @@ public class FactorControllerTest {
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(factor1);
 
-        mockMvc.perform(post("/factor/add")
+        mockMvc.perform( post("/factor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -115,7 +115,7 @@ public class FactorControllerTest {
         object.put("id", factor1.getId());
         object.put("owner", "marker");
 
-        mockMvc.perform(post("/factor/update")
+        mockMvc.perform( put("/factor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(object.toString()))
                 .andExpect(status().isOk())
@@ -131,7 +131,7 @@ public class FactorControllerTest {
         JSONObject object = new JSONObject();
         object.put("id", factor1.getId());
 
-        mockMvc.perform(post("/factor/delete")
+        mockMvc.perform( delete("/factor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(object.toString()))
                 .andExpect(status().isOk())
@@ -150,7 +150,7 @@ public class FactorControllerTest {
         JSONObject object = new JSONObject();
         object.put("id", factor1.getId());
 
-        mockMvc.perform(post("/factor/delete")
+        mockMvc.perform( delete("/factor")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(object.toString()))
                 .andExpect(status().isForbidden());

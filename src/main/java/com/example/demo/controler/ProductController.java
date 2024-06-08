@@ -25,7 +25,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @PreAuthorize( "hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<Product> getAllProducts() {
         logger.info("{} Factors Returned", productService.getAllProducts().size());
@@ -40,14 +40,14 @@ public class ProductController {
     }
 
 
-    @PostMapping("/add")
+    @PostMapping()
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Product createProduct( @RequestBody Product product) {
         logger.info("Product {} Created", product);
         return productService.createProduct( product);
     }
 
-    @PostMapping("/update")
+    @PutMapping()
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String updateProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();
@@ -61,7 +61,7 @@ public class ProductController {
         return output.toString();
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteProduct( @RequestBody Product product) {
         JSONObject output = new JSONObject();

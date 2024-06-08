@@ -48,7 +48,7 @@ public class ProductControllerTest {
     @WithMockUser(username = "admin", password = "admin", roles = "ADMIN")
     @Order(3)
     public void testGetAllProducts() throws Exception {
-        mockMvc.perform( get("/product/all")
+        mockMvc.perform( get("/product")
                     .contentType( MediaType.APPLICATION_JSON))
                 .andExpect( status().isOk())
                 .andExpect( jsonPath("$[0].name").value( product.getName()))
@@ -75,7 +75,7 @@ public class ProductControllerTest {
         object.put( "name", "pen");
         object.put( "price", 4.56);
 
-        mockMvc.perform( post("/product/add")
+        mockMvc.perform( post("/product")
                     .contentType( MediaType.APPLICATION_JSON)
                     .content( object.toString()))
                 .andExpect( status().isOk())
@@ -94,7 +94,7 @@ public class ProductControllerTest {
         object.put( "name", "marker");
         object.put( "price", 5.67);
 
-        mockMvc.perform( post("/product/update")
+        mockMvc.perform( put("/product")
                     .contentType( MediaType.APPLICATION_JSON)
                     .content( object.toString()))
                 .andExpect( status().isOk())
@@ -110,7 +110,7 @@ public class ProductControllerTest {
         JSONObject object = new JSONObject();
         object.put( "id", product1.getId());
 
-        mockMvc.perform( post("/product/delete")
+        mockMvc.perform( delete("/product")
                     .contentType( MediaType.APPLICATION_JSON)
                     .content( object.toString()))
                 .andExpect( status().isOk())
@@ -129,7 +129,7 @@ public class ProductControllerTest {
         JSONObject object = new JSONObject();
         object.put( "id", product1.getId());
 
-        mockMvc.perform( post("/product/delete")
+        mockMvc.perform( delete("/product")
                         .contentType( MediaType.APPLICATION_JSON)
                         .content( object.toString()))
                 .andExpect( status().isForbidden());

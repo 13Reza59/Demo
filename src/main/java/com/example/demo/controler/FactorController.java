@@ -25,7 +25,7 @@ public class FactorController {
         this.factorService = factorService;
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public List<Factor> getAllFactors() {
         logger.info("{} Factors Returned", factorService.getAllFactors().size());
@@ -41,7 +41,7 @@ public class FactorController {
         return factorService.getFactorById( id);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public Factor createFactor( @RequestBody Factor factor) {
         logger.info("Factor {} Created", factor);
@@ -49,7 +49,7 @@ public class FactorController {
         return factorService.createFactor( factor);
     }
 
-    @PostMapping("/update")
+    @PutMapping()
     @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public String updateFactor( @RequestBody Factor factor) {
         JSONObject output = new JSONObject();
@@ -64,7 +64,7 @@ public class FactorController {
         return output.toString();
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteFactor( @RequestBody Factor factor) {
         JSONObject output = new JSONObject();
