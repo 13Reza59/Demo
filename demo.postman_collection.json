@@ -17,25 +17,22 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/product/all",
+							"raw": "http://localhost:8080/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"product",
-								"all"
+								"product"
 							]
 						}
 					},
@@ -170,22 +167,21 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"body": {
@@ -198,15 +194,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/product/update",
+							"raw": "http://localhost:8080/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"product",
-								"update"
+								"product"
 							]
 						}
 					},
@@ -230,7 +225,7 @@
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
@@ -243,7 +238,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 3\n}",
+							"raw": "{\n    \"id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -251,15 +246,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/product/delete",
+							"raw": "http://localhost:8080/product",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"product",
-								"delete"
+								"product"
 							]
 						}
 					},
@@ -277,25 +271,22 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/factor/all",
+							"raw": "http://localhost:8080/factor",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"factor",
-								"all"
+								"factor"
 							]
 						}
 					},
@@ -385,15 +376,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/factor/add",
+							"raw": "http://localhost:8080/factor",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"factor",
-								"add"
+								"factor"
 							]
 						}
 					},
@@ -411,22 +401,21 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"body": {
@@ -439,15 +428,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/factor/update",
+							"raw": "http://localhost:8080/factor",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"factor",
-								"update"
+								"factor"
 							]
 						}
 					},
@@ -465,27 +453,26 @@
 									"});",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							},
 							{
 								"key": "AuthType",
-								"value": "Bearer",
-								"type": "text"
+								"value": "Bearer"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 2\n}",
+							"raw": "{\n    \"id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -493,25 +480,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/factor/delete?Authorization=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQyNTMyNywiZXhwIjoxNzE3NTExNzI3fQ.KhdTCKCpNjlVikh84Qoc_WavvfplS_IVO_jNe0uVkys&AuthType=Bearer",
+							"raw": "http://localhost:8080/factor",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"factor",
-								"delete"
-							],
-							"query": [
-								{
-									"key": "Authorization",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxNzQyNTMyNywiZXhwIjoxNzE3NTExNzI3fQ.KhdTCKCpNjlVikh84Qoc_WavvfplS_IVO_jNe0uVkys"
-								},
-								{
-									"key": "AuthType",
-									"value": "Bearer"
-								}
+								"factor"
 							]
 						}
 					},
@@ -544,7 +520,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"ad@min.com\",\n    \"password\": \"admin\",\n    \"role\": [ \"ROLE_USER\"]\n}",
+							"raw": "{\n    \"username\": \"admin\",\n    \"email\": \"ad@min.com\",\n    \"password\": \"admin\",\n    \"role\": [ \"ROLE_USER\",\"ROLE_ADMIN\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
