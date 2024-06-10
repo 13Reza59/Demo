@@ -3,6 +3,7 @@ package com.example.demo.security;
 import com.example.demo.security.jwt.AuthEntryPointJwt;
 import com.example.demo.security.jwt.AuthTokenFilter;
 import com.example.demo.serivce.UserDetailsServiceImpl;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,10 +63,12 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/help").permitAll()
-                            .requestMatchers("/auth/**").permitAll()
-                            .requestMatchers("/product/**").permitAll()
-                            .requestMatchers("/factor/**").permitAll()
+							auth.requestMatchers("/", "/help", "/auth/**").permitAll()
+							.requestMatchers( "/product/**","/factor/**").permitAll()
+//							.requestMatchers("/help").permitAll()
+//                            .requestMatchers("/auth/**").permitAll()
+//                            .requestMatchers("/product/**").permitAll()
+//                            .requestMatchers("/factor/**").permitAll()
                             .anyRequest().authenticated()
 				);
 
