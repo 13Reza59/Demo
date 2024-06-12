@@ -25,6 +25,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 // jsr250Enabled = true,
 // prePostEnabled = true) // by default
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
+	private static final String LOGIN_PROCESSING_URL = "/login";
+	private static final String LOGIN_FAILURE_URL = "/login?error";
+	private static final String LOGIN_URL = "/login";
+	private static final String LOGOUT_SUCCESS_URL = "/login";
+
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -69,7 +74,10 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 //                            .requestMatchers("/auth/**").permitAll()
 //                            .requestMatchers("/product/**").permitAll()
 //                            .requestMatchers("/factor/**").permitAll()
-                            .anyRequest().authenticated()
+
+							// Allow all requests by logged-in users.
+							.anyRequest().authenticated()
+
 				);
 
 		http.authenticationProvider(authenticationProvider());

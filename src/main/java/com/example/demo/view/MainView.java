@@ -16,7 +16,8 @@ import jakarta.annotation.security.RolesAllowed;
 import org.springframework.util.StringUtils;
 
 @PermitAll
-@Route
+@Route(value="")
+@RolesAllowed({"ROLE_ADMIN","ROLE_USER"})
 public class MainView extends VerticalLayout {
 
     private final FactorRepo factorRepo;
